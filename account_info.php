@@ -2,6 +2,12 @@
 $baseURL = 'https://api.onepipe.io';
 $api_key = "";
 $secret_key = "";
+$accountNumber = "";
+$bankCode="";
+$firstname = "";
+$surname="";
+$email="";
+$mobile_no="";
 // generate unique transaction reference
 function generate_txn_ref( ) {
     global $gen_txn_ref;
@@ -41,14 +47,14 @@ curl_setopt_array($curl, array(
 CURLOPT_POSTFIELDS => '{
     "request_ref":"'.$ref.'",
       "transaction": {
-          "account_number": "6234784766",
-          "bank_code": "070",
+          "account_number": "'.$accountNumber.'",
+          "bank_code": "'.$bankCode.'",
           "customer":{
-              "customer_ref": "6234784766",
-              "firstname": "Ope",
-                "surname": "Adeoye",
-              "email": "opeadeoye@gmail.com",
-              "mobile_no": "2348022221412"
+              "customer_ref": "'.$accountNumber.'",
+              "firstname": "'.$firstname.'",
+                "surname": "'.$surname.'",
+              "email": "'.$email.'",
+              "mobile_no": "'.$mobile_no.'"
           }
     }
   }',
@@ -59,7 +65,6 @@ CURLOPT_POSTFIELDS => '{
     "Cache-Control: no-cache",
     "Content-Type: application/json",
     "Signature: ".$signature,
-    "User-Agent: PostmanRuntime/7.19.0",
     "cache-control: no-cache"
   ),
 ));
