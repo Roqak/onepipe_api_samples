@@ -8,12 +8,10 @@ $firstname = "Ope";
 $surname="Adeoye";
 $email="opeadeoye@gmail.com";
 $mobile_no="2348022221412";
-
 // generate unique transaction reference
 function generate_txn_ref( ) {
     global $gen_txn_ref;
     global $random_chars;
-
 
  $characters = array(
  "A","B","C","D","E","F","G","H","J","K","L","M",
@@ -31,7 +29,7 @@ foreach($keys as $key){
     $random_chars .= $characters[$key];
  }
 
-$gen_txn_ref = "CICO_".$random_chars;
+$gen_txn_ref = "a__".$random_chars;
 return $gen_txn_ref;
 
  };
@@ -40,7 +38,7 @@ $ref = generate_txn_ref();
 $signature = md5($ref.";".$secret_key);
 $curl = curl_init();
 curl_setopt_array($curl, array(
-  CURLOPT_URL => $baseURL."/v1/lookup/accountinfo",
+  CURLOPT_URL => $baseURL."/v1/payments/basic",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
@@ -49,9 +47,17 @@ curl_setopt_array($curl, array(
   CURLOPT_CUSTOMREQUEST => "POST",
 CURLOPT_POSTFIELDS => '{
     "request_ref":"'.$ref.'",
+    "request_type":"bill-payment",
+    "auth": {
+    "type": "card",
+    "secure": "{{auth.secure}}"
+    },
       "transaction": {
-          "account_number": "'.$accountNumber.'",
-          "bank_code": "'.$bankCode.'",
+        "amount": "100",
+        "transaction_ref": "'.$ref.'",
+        "transaction_desc": "Payment for services",
+        "transaction_ref_parent": "",
+        "payment_code":"{{transaction.bills.payment-code}}",
           "customer":{
               "customer_ref": "'.$accountNumber.'",
               "firstname": "'.$firstname.'",
